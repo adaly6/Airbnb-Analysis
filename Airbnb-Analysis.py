@@ -1,11 +1,3 @@
-"""
-Andrew Daly
-
-The purpose of this code is to analyze Airbnb data from New York City. Pandas and Matplotlib
-are used in this scrpit for data analysis and visualization. The script imports a csv file 
-which contains data gathered from Inside Airbnb.
-
-"""
 
 #Import Pandas for data analysis and matplotlib for data visualization
 import pandas as pd
