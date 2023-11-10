@@ -4,7 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 #Read csv file for NYC Airbnb data
-df = pd.read_csv("NYC.csv")
+df = pd.read_csv("nyc.csv")
 
 #Drop any rows with null values
 df.dropna(inplace=True)
