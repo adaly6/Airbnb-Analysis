@@ -4,6 +4,9 @@
 
 This Python script conducts a comprehensive analysis of Airbnb data in New York City, utilizing Pandas and Matplotlib for data processing and visualization. The dataset, gathered from Inside Airbnb, is explored to reveal insights valuable for property owners and potential renters.
 
+## Data Source
+The dataset used in this analysis is sourced from [Inside Airbnb](http://insideairbnb.com/new-york-city), a platform that provides detailed and up-to-date information on Airbnb listings in various cities.
+
 ## Objectives
 
 1. **Borough and Neighborhood Pricing:**
