@@ -2,6 +2,10 @@
 #Import Pandas for data analysis and matplotlib for data visualization
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy.stats import f_oneway
+from sklearn.linear_model import LinearRegression
+import numpy as np
 
 #Read csv file for NYC Airbnb data
 df = pd.read_csv("nyc.csv")
@@ -212,3 +216,67 @@ def getAvailability():
     plt.ylabel('Reviews per Month')
     plt.legend()
     plt.savefig('reviewsXprices.png', bbox_inches = 'tight')
+
+# Correlation Matrix
+def plot_correlation_matrix():
+    corr = df.corr()
+    plt.figure(figsize=(10, 8))
+    sns.heatmap(corr, annot=True, cmap='coolwarm', fmt='.2f')
+    plt.title('Correlation Matrix')
+    plt.savefig('correlation_matrix.png', bbox_inches='tight')
+
+# Distribution of Prices
+def plot_price_distribution():
+    plt.figure(figsize=(10, 6))
+    sns.histplot(df['price'], bins=50, kde=True, color='blue')
+    plt.title('Distribution of Prices')
+    plt.xlabel('Price')
+    plt.ylabel('Frequency')
+    plt.savefig('price_distribution.png', bbox_inches='tight')
+
+# ANOVA Test between Boroughs
+def perform_anova():
+    brooklyn = df[df['Borough'] == 'Brooklyn']['price']
+    manhattan = df[df['Borough'] == 'Manhattan']['price']
+    queens = df[df['Borough'] == 'Queens']['price']
+    staten_island = df[df['Borough'] == 'Staten Island']['price']
+    bronx = df[df['Borough'] == 'Bronx']['price']
+
+    f_stat, p_val = f_oneway(brooklyn, manhattan, queens, staten_island, bronx)
+    print(f'ANOVA F-statistic: {f_stat:.2f}')
+    print(f'ANOVA p-value: {p_val:.4f}')
+
+# Box Plot for Price Distribution Across Boroughs
+def plot_boxplot():
+    plt.figure(figsize=(10, 6))
+    sns.boxplot(x='Borough', y='price', data=df)
+    plt.title('Price Distribution by Borough')
+    plt.ylabel('Price')
+    plt.xlabel('Borough')
+    plt.savefig('boxplot_borough_prices.png', bbox_inches='tight')
+
+# Linear Regression: Reviews vs. Price
+def linear_regression_reviews_price():
+    df['reviews_month'] = df['reviews_month'].replace('#DIV/0!', np.nan).astype(float)
+    df.dropna(subset=['reviews_month'], inplace=True)
+
+    X = df[['price']]
+    y = df['reviews_month']
+
+    model = LinearRegression()
+    model.fit(X, y)
+
+    plt.figure(figsize=(10, 6))
+    plt.scatter(df['price'], df['reviews_month'], alpha=0.5, color='blue')
+    plt.plot(df['price'], model.predict(X), color='red')
+    plt.title('Linear Regression: Price vs. Reviews per Month')
+    plt.xlabel('Price')
+    plt.ylabel('Reviews per Month')
+    plt.savefig('linear_regression_reviews_price.png', bbox_inches='tight')
+
+# Call the functions to generate the plots and statistical analysis
+plot_correlation_matrix()
+plot_price_distribution()
+perform_anova()
+plot_boxplot()
+linear_regression_reviews_price()
